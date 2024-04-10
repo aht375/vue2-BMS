@@ -1,9 +1,11 @@
 <template>
     <div class="header-container">
         <div class="l-content">
-            <el-button @click="handleMenu" icon="el-icon-menu" size="mini"></el-button>
+            <el-button style="margin-right: 20px;" @click="handleMenu" icon="el-icon-menu" size="mini"></el-button>
             <!-- 面包屑 -->
-            <span class="text">首页</span>
+            <el-breadcrumb class="breadcrumb" separator="-">
+                <el-breadcrumb-item v-for="item in tags" :key="item.path" :to="{ path:item.path }">{{item.label}}</el-breadcrumb-item>
+            </el-breadcrumb>
         </div>
         <div class="r-content">
             <el-dropdown>
@@ -19,15 +21,21 @@
     </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 
 export default {
     data() {
         return {}
     },
-    methods:{
-        handleMenu(){
+    methods: {
+        handleMenu() {
             this.$store.commit('collapseMenu')
         }
+    },
+    computed: {
+        ...mapState({
+            tags:state =>state.tab.tabsList
+        })
     }
 }
 </script>
@@ -45,12 +53,22 @@ export default {
         font-size: 14px;
         margin-left: 10px;
     }
-    .r-content{
-        .user{
+
+    .r-content {
+        .user {
             width: 40px;
             height: 40px;
             border-radius: 50px;
         }
+    }
+    .l-content{
+        display: flex;
+        align-items: center;
+        .breadcrumb /deep/ .el-breadcrumb__inner {
+        color:white;
+        font-weight: 200;
+        cursor: pointer;
+                }
     }
 }
 </style>
